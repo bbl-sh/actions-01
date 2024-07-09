@@ -12,4 +12,4 @@ jobs:
       - name: Printing hello
         run: |
           sudo apt install python3
-          echo(python3.__version__)
+          python3 --version
