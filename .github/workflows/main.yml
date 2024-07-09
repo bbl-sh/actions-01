@@ -1,0 +1,11 @@
+name: My awesome experience
+
+on: push
+
+jobs: 
+  first-job:
+    runs-on: ubuntu:latest
+
+    steps:
+    - name: Printing hello
+      run: echo "hiii"
