@@ -7,5 +7,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Printing hello
-      run: echo "hiii"
+      - uses: actions/checkout@v4
+
+      - name: Printing hello
+        run: echo "hiii"
+      - name: listing file
+        run: ls
