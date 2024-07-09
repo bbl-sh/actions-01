@@ -4,6 +4,7 @@ on: push
 
 jobs: 
   first-job:
+    #needs: [need1, need2]
     runs-on: ubuntu-latest
 
     steps:
