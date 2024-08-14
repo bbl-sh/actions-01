@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: action/checkout@v4
+      - uses: actions/checkout@v4
       - name: Second job for running script
         run: ./script.sh
