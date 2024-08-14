@@ -4,33 +4,14 @@ on: push
 
 jobs: 
   first-job:
-    #needs: [need1, need2]
+    runs-on: ubuntu-latest
+    steps:
+      - name: First job step
+        run: echo "This is the first job."
+  second-job:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Printing hello
-        run: |
-          sudo apt install python3
-          python3 --version
-      - run: touch world.txt
-      - run: echo hello > world.txt
-      - uses: actions/upload-artifact@v4
-        with:
-          name: my-artifact
-          path: world.txt
-# name: My awesome experience
-
-# on: push
-
-# jobs: 
-#   first-job:
-#     #needs: [need1, need2]
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - uses: actions/checkout@v4
-      
-#       - name: Printing hello
-#         run: ls | grep -i "something "
+      - uses: action/checkout@v4
+      - name: Second job for running script
+        run: ./script.sh
