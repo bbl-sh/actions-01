@@ -1,0 +1,66 @@
+name: Deploy to Azure Storage
+
+on:
+  push:
+    branches:
+      - main # Trigger the workflow on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Set up Azure CLI
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
+            az storage -h
+      # Development Deployment
+      - name: Deploy to Development Storage
+        run: |
+          az storage blob upload-batch -d \$web --account-name ${{ secrets.DEV_STORAGE_ACCOUNT }} -s .
+          dev_url=$(az storage account show -n ${{ secrets.DEV_STORAGE_ACCOUNT }} --query "primaryEndpoints.web" --output tsv)
+          echo "Development Website URL: $dev_url"
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        continue-on-error: false # Stop the workflow if this deployment fails
+
+      # Staging Deployment
+      - name: Deploy to Staging Storage
+        run: |
+          az storage blob upload-batch -d \$web --account-name ${{ secrets.STAGE_STORAGE_ACCOUNT }} -s .
+          stage_url=$(az storage account show -n ${{ secrets.STAGE_STORAGE_ACCOUNT }} --query "primaryEndpoints.web" --output tsv)
+          echo "Staging Website URL: $stage_url"
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        continue-on-error: false # Stop the workflow if this deployment fails
+
+      # Production Deployment
+      - name: Deploy to Production Storage
+        run: |
+          az storage blob upload-batch -d \$web --account-name ${{ secrets.PROD_STORAGE_ACCOUNT }} -s .
+          prod_url=$(az storage account show -n ${{ secrets.PROD_STORAGE_ACCOUNT }} --query "primaryEndpoints.web" --output tsv)
+          echo "Production Website URL: $prod_url"
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        continue-on-error: false # Stop the workflow if this deployment fails
