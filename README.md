@@ -14,11 +14,10 @@ This project shows how to set up a simple CI/CD pipeline. It includes:
 
 ---
 
-## Useful Links
-1. [Link 1](#)
-2. [Link 2](#)
-3. [Link 3](#)
-4. [Link 4](#)
+## Repo Linked to this Challenge
+1. [Link 1](https://github.com/bbl-sh/actions-02)
+2. [Link 2](https://github.com/bbl-sh/devops-02)
+3. [Link 3](https://github.com/bbl-sh/devops-challenge-1)
 
 ## YouTube Videos - These are the youtube videoes describing the challenges and Explanation of the challenges
 1. [Basics of Github actions](https://youtu.be/5xKHJKOcR1I?si=CoR5jeS21mPY4hTF)
